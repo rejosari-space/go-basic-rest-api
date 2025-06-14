@@ -19,14 +19,18 @@ func (repository *CategoryRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, 
 	id,err:= result.LastInsertId()
 	helper.PanicIfError(err)
 
-	
+
 	category.Id=int(id)
 	return category
 
 }
 
-func (repository *CategoryRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, ctaegory domain.Category) domain.Category {
-	panic("not implemented") // TODO: Implement
+func (repository *CategoryRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, category domain.Category) domain.Category {
+	query:= "UPDATE category SET name =? WHERE id = ?"
+	_,err:= tx.ExecContext(ctx,query ,category.Name,category.Id)
+	helper.PanicIfError(err)
+
+	return category
 }
 
 func (repository *CategoryRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, category domain.Category) {
