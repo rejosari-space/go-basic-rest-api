@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"go-learn-rest-api/helper"
 	"go-learn-rest-api/model/domain"
-	"go-learn-rest-api/model/domain/web"
+	"go-learn-rest-api/model/web"
 	"go-learn-rest-api/repository"
 
 	"github.com/go-playground/validator/v10"
@@ -27,7 +27,8 @@ func NewCategoryService(categoryRepository repository.CategoryRepository, DB *sq
 
 func (service *CategoryServiceImpl) Create(ctx context.Context, request web.CategoryCreateRequest) web.CategoryResponse {
 	// validation
-	service.Validate.Struct(request)
+	err := service.Validate.Struct(request)
+	helper.PanicIfError(err)
 
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
@@ -43,6 +44,10 @@ func (service *CategoryServiceImpl) Create(ctx context.Context, request web.Cate
 }
 
 func (service *CategoryServiceImpl) Update(ctx context.Context, request web.CategoryUpdateRequest) web.CategoryResponse {
+	// validation
+	err := service.Validate.Struct(request)
+	helper.PanicIfError(err)
+
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)

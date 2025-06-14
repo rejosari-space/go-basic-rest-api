@@ -1,0 +1,42 @@
+package main
+
+import (
+	"go-learn-rest-api/app"
+	"go-learn-rest-api/controller"
+	"go-learn-rest-api/helper"
+	"go-learn-rest-api/repository"
+	"go-learn-rest-api/service"
+	"net/http"
+
+	_ "github.com/go-sql-driver/mysql"
+
+	"github.com/go-playground/validator/v10"
+	"github.com/julienschmidt/httprouter"
+)
+
+func main() {
+
+	validate := validator.New()
+	db := app.NewDB()
+
+	categoryRepository := repository.NewCategorRepository()
+	categoryService := service.NewCategoryService(categoryRepository, db, validate)
+	categoryController := controller.NewCategoryController(categoryService)
+
+	router := httprouter.New()
+
+	router.GET("/api/categories", categoryController.FindAll)
+	router.GET("/api/categories/:categoryId", categoryController.FindById)
+	router.POST("/api/categories", categoryController.Create)
+	router.PUT("/api/categories/:categoryId", categoryController.Update)
+	router.DELETE("/api/categories/:categoryId", categoryController.Delete)
+
+	// server
+	server := http.Server{
+		Addr:    "localhost:3000",
+		Handler: router,
+	}
+
+	err := server.ListenAndServe()
+	helper.PanicIfError(err)
+}

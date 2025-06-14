@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"go-learn-rest-api/model/domain/web"
+	"go-learn-rest-api/model/web"
 )
 
 type CategoryService interface {

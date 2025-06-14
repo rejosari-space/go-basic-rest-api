@@ -2,7 +2,7 @@ package controller
 
 import (
 	"go-learn-rest-api/helper"
-	"go-learn-rest-api/model/domain/web"
+	"go-learn-rest-api/model/web"
 	"go-learn-rest-api/service"
 	"net/http"
 	"strconv"

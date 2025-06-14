@@ -2,7 +2,7 @@ package helper
 
 import (
 	"go-learn-rest-api/model/domain"
-	"go-learn-rest-api/model/domain/web"
+	"go-learn-rest-api/model/web"
 )
 
 func ToCategoryResponse(category domain.Category) web.CategoryResponse {
