@@ -7,14 +7,20 @@ import (
 	"go-learn-rest-api/model/domain"
 	"go-learn-rest-api/model/domain/web"
 	"go-learn-rest-api/repository"
+
+	"github.com/go-playground/validator/v10"
 )
 
 type CategoryServiceImpl struct {
 	db         *sql.DB
 	repository repository.CategoryRepository
+	validate   *validator.Validate
 }
 
 func (service *CategoryServiceImpl) Create(ctx context.Context, request web.CategoryCreateRequest) web.CategoryResponse {
+	// validation
+	service.validate.Struct(request)
+
 	tx, err := service.db.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
