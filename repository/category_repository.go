@@ -1,0 +1,14 @@
+package repository
+
+import (
+	"context"
+	"database/sql"
+	"go-learn-rest-api/model/domain"
+)
+type Categoryrepository interface{
+	Save(ctx context.Context, tx *sql.Tx,category domain.Category)domain.Category
+	Update(ctx context.Context,tx *sql.Tx,ctaegory domain.Category)domain.Category
+	Delete(ctx context.Context,tx *sql.Tx, category domain.Category)
+	FindById(ctx context.Context, tx *sql.Tx ,categoryId int)domain.Category
+	FindAll(ctx context.Context,tx *sql.Tx)[] domain.Category
+}
