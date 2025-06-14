@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"go-learn-rest-api/helper"
 	"go-learn-rest-api/model/domain"
 )
 
@@ -13,14 +14,12 @@ type CategoryRepositoryImpl struct {
 func (repository *CategoryRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, category domain.Category) domain.Category {
 	query := "INSERT INTO category(name) values(?)"
 	result,err := tx.ExecContext(ctx,query,category.Name)
-	if err != nil {
-		panic(err)
-	}
+	helper.PanicIfError(err)
 
 	id,err:= result.LastInsertId()
-	if err != nil {
-		panic(err)
-	}
+	helper.PanicIfError(err)
+
+	
 	category.Id=int(id)
 	return category
 
