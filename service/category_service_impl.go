@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"database/sql"
+	"go-learn-rest-api/exception"
 	"go-learn-rest-api/helper"
 	"go-learn-rest-api/model/domain"
 	"go-learn-rest-api/model/web"
@@ -53,7 +54,10 @@ func (service *CategoryServiceImpl) Update(ctx context.Context, request web.Cate
 	defer helper.CommitOrRollback(tx)
 
 	category, err := service.CategoryRepository.FindById(ctx, tx, request.Id)
-	helper.PanicIfError(err)
+	if err != nil {
+
+		panic(exception.NewNotfoundError(err.Error()))
+	}
 
 	category.Name = request.Name
 
@@ -68,7 +72,10 @@ func (service *CategoryServiceImpl) Delete(ctx context.Context, categoryid int) 
 	defer helper.CommitOrRollback(tx)
 
 	category, err := service.CategoryRepository.FindById(ctx, tx, categoryid)
-	helper.PanicIfError(err)
+	if err != nil {
+
+		panic(exception.NewNotfoundError(err.Error()))
+	}
 
 	service.CategoryRepository.Delete(ctx, tx, category)
 }
@@ -79,7 +86,10 @@ func (service *CategoryServiceImpl) FindById(ctx context.Context, categoryid int
 	defer helper.CommitOrRollback(tx)
 
 	category, err := service.CategoryRepository.FindById(ctx, tx, categoryid)
-	helper.PanicIfError(err)
+	if err != nil {
+
+		panic(exception.NewNotfoundError(err.Error()))
+	}
 
 	return helper.ToCategoryResponse(category)
 }

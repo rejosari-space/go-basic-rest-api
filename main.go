@@ -3,6 +3,7 @@ package main
 import (
 	"go-learn-rest-api/app"
 	"go-learn-rest-api/controller"
+	"go-learn-rest-api/exception"
 	"go-learn-rest-api/helper"
 	"go-learn-rest-api/repository"
 	"go-learn-rest-api/service"
@@ -30,6 +31,8 @@ func main() {
 	router.POST("/api/categories", categoryController.Create)
 	router.PUT("/api/categories/:categoryId", categoryController.Update)
 	router.DELETE("/api/categories/:categoryId", categoryController.Delete)
+
+	router.PanicHandler = exception.ErrorHandler
 
 	// server
 	server := http.Server{
